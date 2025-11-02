@@ -4,6 +4,7 @@ const Invoice = {
     name: 'Acme Corporation',
     address: '123 Business St, City, ST 12345',
     email: 'contact@acme.com',
+    logo: null,
   },
   invoiceMeta: {
     number: 'INV-001',
@@ -58,6 +59,8 @@ const elements = {
   cancelSaveBtn: document.getElementById('cancelSaveBtn'),
   cancelLoadBtn: document.getElementById('cancelLoadBtn'),
   savedInvoicesList: document.getElementById('savedInvoicesList'),
+  addLogoBtn: document.getElementById('addLogoBtn'),
+  logoFileInput: document.getElementById('logoFileInput'),
 };
 
 /**
@@ -196,6 +199,8 @@ function bindEvents() {
   elements.printBtn.addEventListener('click', printInvoice);
   elements.pdfBtn.addEventListener('click', exportPDF);
   elements.templateToggle.addEventListener('click', toggleTemplate);
+  elements.addLogoBtn.addEventListener('click', () => elements.logoFileInput.click());
+  elements.logoFileInput.addEventListener('change', handleLogoUpload);
 
   // Modal Controls
   elements.confirmSaveBtn.addEventListener('click', confirmSave);
@@ -412,6 +417,7 @@ function renderInvoicePreview() {
   const grandTotal = calculateGrandTotal();
 
   const html = `
+    ${Invoice.business.logo ? `<img src="${Invoice.business.logo}" alt="Business Logo" class="invoice-logo">` : ''}
     <div class="invoice-header">
       <div>
         <div class="invoice-title">Invoice</div>
@@ -768,6 +774,63 @@ function handleKeyboardShortcuts(event) {
     event.preventDefault();
     createNewInvoice();
   }
+}
+
+/**
+ * Handle logo upload with background removal
+ */
+function handleLogoUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      // Use canvas to process image (basic compression)
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const maxWidth = 300;
+      const maxHeight = 300;
+      let width = img.width;
+      let height = img.height;
+
+      if (width > height) {
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width = Math.round((width * maxHeight) / height);
+          height = maxHeight;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
+
+      // Store as base64
+      Invoice.business.logo = canvas.toDataURL('image/png');
+      saveToLocalStorage();
+      render();
+
+      // Reset file input
+      elements.logoFileInput.value = '';
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+/**
+ * Remove logo from invoice
+ */
+function removeLogo() {
+  Invoice.business.logo = null;
+  saveToLocalStorage();
+  render();
 }
 
 /**

@@ -14,7 +14,6 @@
       <div class="header-content">
         <div class="logo-section">
           <img src="Invox.png" alt="Invox Logo" title="Invox Invoice Maker" class="logo">
-          <h1>Invox</h1>
         </div>
         <div class="header-controls">
           <button id="templateToggle" class="template-switch" aria-label="Toggle between Minimal and Professional templates">
@@ -144,9 +143,14 @@
       <div class="preview-panel">
         <div class="panel-header sticky">
           <h2>Invoice Preview</h2>
+          <button id="addLogoBtn" class="secondary-btn" title="Add logo to invoice">
+            🖼️ Add Logo
+          </button>
         </div>
-        <div id="invoicePreview" class="invoice-preview">
-          <!-- Generated dynamically -->
+        <div class="invoice-preview-container">
+          <div id="invoicePreview" class="invoice-preview">
+            <!-- Generated dynamically -->
+          </div>
         </div>
       </div>
     </main>
@@ -163,6 +167,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Hidden file input for logo upload -->
+  <input type="file" id="logoFileInput" accept="image/*" style="display: none;">
 
   <!-- Modal for Load Dialog -->
   <div id="loadModal" class="modal hidden">
