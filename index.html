@@ -1,15 +1,183 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Invox - A professional static Invoice Maker built with React, TypeScript, and Vite" />
-    <meta name="theme-color" content="#1e40af" />
-    <title>Invox - Invoice Maker</title>
-  </head>
-  <body class="font-sans antialiased">
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Invox - Modern Monochromatic Invoice Maker">
+  <title>Invox — Invoice Maker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-content">
+        <div class="logo-section">
+          <img src="Invox.png" alt="Invox Logo" title="Invox Invoice Maker" class="logo">
+          <h1>Invox</h1>
+        </div>
+        <div class="header-controls">
+          <button id="templateToggle" class="template-switch" aria-label="Toggle between Minimal and Professional templates">
+            <span class="template-name">Minimal</span>
+          </button>
+          <button id="printBtn" class="icon-btn" title="Print invoice (Ctrl+P)">
+            <span>🖨️ Print</span>
+          </button>
+          <button id="pdfBtn" class="icon-btn" title="Download as PDF">
+            <span>📥 PDF</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Form Panel -->
+      <div class="form-panel">
+        <div class="panel-header">
+          <h2>Invoice Details</h2>
+          <div class="save-controls">
+            <button id="saveBtn" class="primary-btn" title="Save invoice (Ctrl+S)">
+              💾 Save Invoice
+            </button>
+            <button id="loadBtn" class="secondary-btn" title="Load saved invoice">
+              📂 Load
+            </button>
+            <button id="newBtn" class="secondary-btn" title="Start new invoice">
+              ✨ New
+            </button>
+          </div>
+        </div>
+
+        <!-- Business Info Section -->
+        <section class="form-section">
+          <h3>Your Business</h3>
+          <div class="form-group">
+            <label for="businessName">Business Name *</label>
+            <input type="text" id="businessName" placeholder="Your Company Name" required>
+          </div>
+          <div class="form-group">
+            <label for="businessAddress">Address</label>
+            <textarea id="businessAddress" placeholder="Street, City, State ZIP"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="businessEmail">Email</label>
+            <input type="email" id="businessEmail" placeholder="contact@company.com">
+          </div>
+        </section>
+
+        <!-- Invoice Meta Section -->
+        <section class="form-section">
+          <h3>Invoice Details</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="invoiceNumber">Invoice # *</label>
+              <input type="text" id="invoiceNumber" placeholder="INV-001" required>
+            </div>
+            <div class="form-group">
+              <label for="invoiceDate">Date *</label>
+              <input type="date" id="invoiceDate" required>
+            </div>
+            <div class="form-group">
+              <label for="dueDate">Due Date</label>
+              <input type="date" id="dueDate">
+            </div>
+          </div>
+        </section>
+
+        <!-- Client Section -->
+        <section class="form-section">
+          <h3>Bill To</h3>
+          <div class="form-group">
+            <label for="clientName">Client Name *</label>
+            <input type="text" id="clientName" placeholder="Client name" required>
+          </div>
+          <div class="form-group">
+            <label for="clientEmail">Email</label>
+            <input type="email" id="clientEmail" placeholder="client@example.com">
+          </div>
+          <div class="form-group">
+            <label for="clientAddress">Address</label>
+            <textarea id="clientAddress" placeholder="Street, City, State ZIP"></textarea>
+          </div>
+        </section>
+
+        <!-- Line Items Section -->
+        <section class="form-section">
+          <div class="section-header">
+            <h3>Line Items</h3>
+            <span class="item-count" aria-live="polite">Items: <span id="itemCount">0</span></span>
+          </div>
+          <div id="lineItemsContainer" class="line-items-container"></div>
+          <button id="addItemBtn" class="add-item-btn" type="button">
+            <span>+ Add Line Item</span>
+          </button>
+        </section>
+
+        <!-- Taxes & Discount -->
+        <section class="form-section">
+          <h3>Taxes & Discount</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="taxPercent">Tax (%)</label>
+              <input type="number" id="taxPercent" placeholder="0" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+              <label for="discountType">Discount Type</label>
+              <select id="discountType">
+                <option value="percent">Percentage (%)</option>
+                <option value="fixed">Fixed Amount ($)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="discountValue">Discount</label>
+              <input type="number" id="discountValue" placeholder="0" min="0" step="0.01">
+            </div>
+          </div>
+        </section>
+
+        <!-- Validation Messages -->
+        <div id="validationMessages" class="validation-messages" aria-live="assertive" aria-atomic="true"></div>
+      </div>
+
+      <!-- Preview Panel -->
+      <div class="preview-panel">
+        <div class="panel-header sticky">
+          <h2>Invoice Preview</h2>
+        </div>
+        <div id="invoicePreview" class="invoice-preview">
+          <!-- Generated dynamically -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal for Save Dialog -->
+  <div id="saveModal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Save Invoice</h3>
+      <input type="text" id="saveNameInput" placeholder="e.g., Client A - November">
+      <div class="modal-buttons">
+        <button id="confirmSaveBtn" class="primary-btn">Save</button>
+        <button id="cancelSaveBtn" class="secondary-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Load Dialog -->
+  <div id="loadModal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Load Invoice</h3>
+      <div id="savedInvoicesList" class="saved-list"></div>
+      <div class="modal-buttons">
+        <button id="cancelLoadBtn" class="secondary-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CDN Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
 </html>
