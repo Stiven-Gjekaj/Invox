@@ -61,6 +61,9 @@ const elements = {
   savedInvoicesList: document.getElementById('savedInvoicesList'),
   addLogoBtn: document.getElementById('addLogoBtn'),
   logoFileInput: document.getElementById('logoFileInput'),
+  previewBtn: document.getElementById('previewBtn'),
+  previewModal: document.getElementById('previewModal'),
+  closePreviewBtn: document.getElementById('closePreviewBtn'),
 };
 
 /**
@@ -193,6 +196,7 @@ function bindEvents() {
   elements.addItemBtn.addEventListener('click', addLineItem);
 
   // Buttons
+  elements.previewBtn.addEventListener('click', openPreviewModal);
   elements.saveBtn.addEventListener('click', openSaveModal);
   elements.loadBtn.addEventListener('click', openLoadModal);
   elements.newBtn.addEventListener('click', createNewInvoice);
@@ -201,6 +205,10 @@ function bindEvents() {
   elements.templateToggle.addEventListener('click', toggleTemplate);
   elements.addLogoBtn.addEventListener('click', () => elements.logoFileInput.click());
   elements.logoFileInput.addEventListener('change', handleLogoUpload);
+  elements.closePreviewBtn.addEventListener('click', closePreviewModal);
+  elements.previewModal.addEventListener('click', (e) => {
+    if (e.target === elements.previewModal) closePreviewModal();
+  });
 
   // Modal Controls
   elements.confirmSaveBtn.addEventListener('click', confirmSave);
@@ -774,6 +782,21 @@ function handleKeyboardShortcuts(event) {
     event.preventDefault();
     createNewInvoice();
   }
+}
+
+/**
+ * Open preview modal
+ */
+function openPreviewModal() {
+  render();
+  elements.previewModal.classList.remove('hidden');
+}
+
+/**
+ * Close preview modal
+ */
+function closePreviewModal() {
+  elements.previewModal.classList.add('hidden');
 }
 
 /**

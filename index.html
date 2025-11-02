@@ -31,11 +31,14 @@
 
     <!-- Main Content -->
     <main class="main-content">
-      <!-- Form Panel -->
-      <div class="form-panel">
+      <!-- Form Panel (centered, larger) -->
+      <div class="form-panel form-panel-full">
         <div class="panel-header">
           <h2>Invoice Details</h2>
           <div class="save-controls">
+            <button id="previewBtn" class="secondary-btn" title="Preview invoice">
+              👁️ Preview
+            </button>
             <button id="saveBtn" class="primary-btn" title="Save invoice (Ctrl+S)">
               💾 Save Invoice
             </button>
@@ -139,21 +142,25 @@
         <div id="validationMessages" class="validation-messages" aria-live="assertive" aria-atomic="true"></div>
       </div>
 
-      <!-- Preview Panel -->
-      <div class="preview-panel">
-        <div class="panel-header sticky">
-          <h2>Invoice Preview</h2>
+    </main>
+  </div>
+
+  <!-- Modal for Invoice Preview -->
+  <div id="previewModal" class="modal hidden">
+    <div class="preview-modal-content">
+      <div class="preview-modal-header">
+        <h2>Invoice Preview</h2>
+        <div class="preview-modal-controls">
           <button id="addLogoBtn" class="secondary-btn" title="Add logo to invoice">
             🖼️ Add Logo
           </button>
-        </div>
-        <div class="invoice-preview-container">
-          <div id="invoicePreview" class="invoice-preview">
-            <!-- Generated dynamically -->
-          </div>
+          <button id="closePreviewBtn" class="close-btn" title="Close preview">✕</button>
         </div>
       </div>
-    </main>
+      <div id="invoicePreview" class="invoice-preview">
+        <!-- Generated dynamically -->
+      </div>
+    </div>
   </div>
 
   <!-- Modal for Save Dialog -->
