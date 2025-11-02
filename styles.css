@@ -58,6 +58,25 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Hide scrollbars but keep functionality */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: none;
+}
+
 body {
   font-family: var(--font-sans);
   color: var(--color-text);
@@ -94,7 +113,7 @@ body {
   align-items: center;
   flex-wrap: wrap;
   gap: var(--spacing-lg);
-  padding: var(--spacing-xl);
+  padding: var(--spacing-md) var(--spacing-xl);
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
@@ -107,8 +126,8 @@ body {
 }
 
 .logo {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   aspect-ratio: 1;
   filter: brightness(1.2);
   transition: transform var(--duration-normal) ease;
