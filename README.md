@@ -132,7 +132,9 @@ Edit CSS variables at the top of `styles.css` to change colors, fonts, and spaci
 ## 🔒 Privacy & Security
 
 ✅ **100% Client-Side**: All invoices stored in your browser's `localStorage`
+
 ✅ **No Server**: No data sent anywhere
+
 ✅ **No Tracking**: Privacy-first by default
 
 **Future**: To add email/cloud sync, integrate your backend API in `app.js` at the `saveToLocalStorage()` function.
