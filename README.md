@@ -2,8 +2,6 @@
 
 <img src="Invox.png" alt="Invox Logo" width="400"/>
 
-### Modern Monochromatic Invoice Maker
-
 _A sleek, client-side invoice application with live preview and export capabilities_
 
 <p align="center">
